@@ -1,40 +1,58 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: rgb(100, 100, 100);
+  background-color: rgb(250, 250, 250);
 }
 
 canvas { 
-  display: block; 
+  display: block;
+  float: left;
   padding: 40px;
+  position: absolute;
 }
 
-.remove { visibility: hidden; }
+.hide { visibility: hidden; }
 
 .lblClass {
-  color: white;
+  color: rgb(120, 120, 120);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .btnClass {
   padding: 10px;
   background-color: transparent;
-  color: white;
+  color: rgb(61, 61, 61);
   width: 150px;
   border: 1px solid;
-  border-color: white;
+  border-color: rgb(156, 156, 156);
   border-radius: 5px;
 }
-.btnClass:hover { background-color: rgb(120, 120, 120); } 
+.btnClass:hover { background-color: rgb(218, 218, 218); } 
 
 .smallBtn {
   padding: 5px;
-  background-color: rgb(70, 70, 70);
-  color: white;
+  background-color: rgb(216, 216, 216);
+  color: rgb(92, 92, 92);
   width: 120px;
   border: 1px solid;
-  border-color: white;
+  border-color: rgb(158, 158, 158);
   border-radius: 10px;
+  margin-left: 30px;
 }
 
-.smallBtn:hover { background-color: rgb(50, 50, 50); } 
+.smallBtn:hover { background-color: rgb(226, 226, 226); } 
+
+#sideNav {
+  height: 100%;
+  width: 300px;
+  float: right;
+  background-color: rgb(250, 250, 250);
+  padding: 30px;
+  position: relative;
+}
+
+.inputClass { 
+  width: 50px; 
+  background-color: rgb(218, 218, 218);
+  color: rgb(39, 39, 39);
+}

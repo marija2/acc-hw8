@@ -2,37 +2,52 @@
 var detector;
 var video;
 var objects = [];
-var buttons = [];
-var num;
+var currGuessed;
 var score = 0;
-
-var label;
-var scoreLabel;
-var foundLabel;
-var guessBtn;
 var totalGuessed = 0;
+var imgCounter = 0;
+var newList;
+
+var canvas;
+var sideNav;
+var scoreLbl;
+var guessBtn;
+var msgLbl;
+var listLbl;
+var inputLbl;
+var txtInput;
+var addBtn;
 
 function preload() { detector = ml5.objectDetector( "cocossd" ); }
 
 function setup() {
 
-  createCanvas( windowWidth, windowHeight );
+  canvas = createCanvas( 640, 480 );
 
-  label = createElement( "h4", "Score:" );
-  label.position( 800, 30 );
-  label.addClass ( "lblClass" );
+  sideNav = select( "#sideNav" );
+  scoreLbl = select( "#scoreLbl" );
+  guessBtn = select( "#guessBtn" );
+  msgLbl = select ( "#msgLbl" );
+  listLbl = select ( "#listLbl" );
+  inputLbl = select ( "#inputLbl" );
+  txtInput = select ( "#txtInput" );
+  addBtn = select ( "#addBtn" );
+  screenshot = select ( "#screenshot" );
 
-  scoreLabel = createElement( "h4", "0/0" );
-  scoreLabel.id( "scoreLabel" );
-  scoreLabel.position( 900, 30 );
-  scoreLabel.addClass ( "lblClass" );
-
-  guessBtn = createButton ( "Guess" );
   guessBtn.mousePressed ( getObjects );
-  guessBtn.position ( 800, 80 );
-  guessBtn.addClass ( "btnClass" );
+  addBtn.mousePressed ( updateScore );
 
   video = createCapture( VIDEO, videoLoaded );
+}
+
+function updateScore() {
+
+  if ( int( txtInput.value() ) > currGuessed ) return;  // can't add a number larger than the number of items guessed
+
+  if ( score + int( txtInput.value() ) > totalGuessed ) return;
+
+  score += int( txtInput.value() );
+  scoreLbl.html( "Score: " + score + "/" + totalGuessed );
 }
 
 function getObjects() {
@@ -40,25 +55,22 @@ function getObjects() {
   guessBtn.html( "Guess again" );
 
   if ( totalGuessed == 0 ) {
-    foundLabel = createElement( "h5", "Here are the objects I found: <br> Click on the ones that are correct!" );
-    foundLabel.position( 800, 110 );
-    foundLabel.addClass ( "lblClass" );
+    msgLbl.removeClass ( "hide" );
   }
 
-  for ( var i = 0; i < num; ++i ) { buttons[i].addClass( "remove" ); }
-
+  currGuessed = objects.length;
   totalGuessed += objects.length;
-  scoreLabel.html( score + "/" + totalGuessed );
-  num = objects.length;
+  scoreLbl.html( "Score: " + score + "/" + totalGuessed );
 
-  for( var i = 0; i < num; ++i ) {
+  newList = "";
 
-    // create button
-    buttons[i] = createButton( ( i + 1 ) + ". " + objects[i].label );
-    buttons[i].position ( 800, 170 + 30 * i );
-    buttons[i].mousePressed ( vote );
-    buttons[i].addClass ( "smallBtn" );
-  }
+  for( var i = 0; i < objects.length; ++i ) { newList += ( i + 1 ) + ". " + objects[i].label + "<br>"; }
+
+  listLbl.html( newList );
+
+  inputLbl.removeClass ( "hide" );
+  txtInput.removeClass ( "hide" );
+  addBtn.removeClass ( "hide" );
 }
 
 function videoLoaded() {
@@ -77,18 +89,14 @@ function foundObjects( error, results ) {
   }
 }
 
-function vote() { scoreLabel.html( ++score + "/" + totalGuessed ); }
-
 function draw() {
 
-  // clear background and draw image again
-  background ( 100, 100, 100 );
   image( video, 0, 0 );
 
   for( var i = 0; i < objects.length; ++i ) {
 
     // draw rectangle
-    stroke( 255, 58, 107 );
+    stroke( 112, 179, 255 );
     strokeWeight( 7 );
     noFill();
     rect( objects[i].x, objects[i].y, objects[i].width, objects[i].height );
